@@ -18,7 +18,7 @@ Or run single spider
 
 - Tìm hiểu về [Scrapy](https://scrapy.org/)
 - Fork project về tài khoản GitHub của bạn: https://github.com/pymivn/pyjobs_crawlers#fork-destination-box (bấm nút Fork góc trên bên phải).
-- Chỉnh sửa các spiders trong spiders/ hoặc thêm spiders/ mới
+- Chỉnh sửa các spiders trong spiders/ hoặc thêm spider mới
 - Commit, push rồi tạo Pull Request https://github.com/pymivn/pyjobs_crawlers/compare
 
 # Các tiêu chí về spider
