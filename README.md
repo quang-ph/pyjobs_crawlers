@@ -13,3 +13,18 @@ Or run single spider
 ```
 ./runner CareerBuilder
 ```
+
+# Đóng góp
+
+- Tìm hiểu về [Scrapy](https://scrapy.org/)
+- Fork project về tài khoản GitHub của bạn: https://github.com/pymivn/pyjobs_crawlers#fork-destination-box (bấm nút Fork góc trên bên phải).
+- Chỉnh sửa các spiders trong spiders/ hoặc thêm spiders/ mới
+- Commit, push rồi tạo Pull Request https://github.com/pymivn/pyjobs_crawlers/compare
+
+# Các tiêu chí về spider
+- Mỗi job phải có tối thiểu 5 thông tin:
+  ```
+  ['name', 'province', 'url', 'work', 'specialize']
+  ```
+- Code chuẩn Pep8
+- Python 2 (project được tạo trước khi Scrapy hỗ trợ Python3)
