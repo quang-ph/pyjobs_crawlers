@@ -25,8 +25,7 @@ class ItviecSpider(scrapy.Spider):
         item['name'] = xtract(resp, ('//h1[@class="job_title"]/'
                                      'text()'))
         item["company"] = xtract(resp, ('//div[@class="employer-info"]/'
-                                        'h3[@class="name"]/'
-                                        'text()'))
+                                        'h3[@class="name"]/a/text()'))
         item["address"] = xtract(resp, ('//div[@class="address__full-address"]'
                                         '/span/text()'))
         item["expiry_date"] = ''
