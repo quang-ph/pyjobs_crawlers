@@ -1,5 +1,6 @@
 import logging
 import requests
+import string
 
 logger = logging.getLogger(__name__)
 REQUIRED_FIELDS = ['company', 'name', 'province', 'url', 'work', 'specialize']
@@ -36,7 +37,7 @@ class ValidatePipeline(object):
             assert isinstance(v, basestring), (
                     "Pipeline only accepts string, "
                     "crawler must preprocess other types to string")
-            if v.strip() == '':
+            if v.strip().strip(string.punctuation) == '':
                 logger.error('Drop job: %s %s, required key %r is empty',
                              item.get('name', 'MISSING'),
                              item.get('url', 'MISSING'),
