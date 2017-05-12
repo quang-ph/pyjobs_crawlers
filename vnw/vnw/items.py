@@ -5,6 +5,7 @@
 
 from scrapy.item import Item, Field
 
+
 class PyjobItem(Item):
     name = Field()
     company = Field()
@@ -30,5 +31,3 @@ class PyjobItem(Item):
     experience = Field()
     keyword = Field()
     content = Field()
-    
-    pass

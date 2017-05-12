@@ -2,7 +2,6 @@
 
 import scrapy
 import dateutil.parser
-import time
 import logging
 
 from selenium import webdriver

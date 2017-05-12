@@ -14,6 +14,19 @@ Or run single spider
 ./runner CareerBuilder
 ```
 
+# Test / lint
+
+Để test style/lint chạy:
+
+```
+make lint
+```
+
+Chú ý, máy bạn cần cài sẵn `make`.
+
+
+- Test: #TODO
+
 # Đóng góp
 
 - Tìm hiểu về [Scrapy](https://scrapy.org/)
@@ -26,5 +39,5 @@ Or run single spider
   ```
   ['name', 'province', 'url', 'work', 'specialize']
   ```
-- Code chuẩn Pep8
+- Code chuẩn Pep8, độ dài mỗi dòng giới hạn là 100 ký tự.
 - Python 2 (project được tạo trước khi Scrapy hỗ trợ Python3)
