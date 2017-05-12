@@ -3,7 +3,7 @@
 import scrapy
 from ..keywords import KWS
 from ..items import PyjobItem
-from ..pymods import xtract
+from ..pymods import xtract, handle_empty_skill
 
 
 class TopdevSpider(scrapy.Spider):
@@ -59,4 +59,5 @@ class TopdevSpider(scrapy.Spider):
             item["specialize"] = xtract(resp, '//div[@id="job-requirement"]'
                                               '/*/*/*/ul/li/text()')
 
+        handle_empty_skill(item)
         yield item

@@ -3,7 +3,7 @@
 import scrapy
 from ..keywords import KWS
 from ..items import PyjobItem
-from ..pymods import xtract
+from ..pymods import xtract, xtract_list, handle_empty_skill
 from urlparse import urljoin
 
 
@@ -25,8 +25,7 @@ class TopdevSpider(scrapy.Spider):
     def parse_content(self, resp):
         item = PyjobItem()
         item["url"] = resp.url
-        item["name"] = xtract(resp, '//div[@class="job-position-wrap"]'
-                                    '/h1/text()')
+        item["name"] = xtract_list(resp, '//div[@class="job-position-wrap"]//text()')[0]
         if xtract(resp, '//div[@id="location"]'
                         '/p/span/span[@id="single_work_location"]'):
             item["province"] = xtract(resp, '//div[@id="location"]'
@@ -38,7 +37,7 @@ class TopdevSpider(scrapy.Spider):
         item["post_date"] = xtract(resp, '//p[@id="posting_date"]'
                                          '/span/text()')
         item["company"] = xtract(resp, '//div[@id="company_name"]'
-                                       '/text()')
+                                       '//text()')
         if xtract(resp, '//div[@id="job_description"]/ul[1]/li'):
             item["work"] = xtract(resp, '//div[@id="job_description"]'
                                         '/ul[1]/li/text()')
@@ -46,8 +45,8 @@ class TopdevSpider(scrapy.Spider):
             item["work"] = xtract(resp, '//div[@id="job_description"]'
                                         '/div/ul[1]/li/text()')
         else:
-            item["work"] = xtract(resp, '//div[@id="job_description"]'
-                                        '/div[1]/text()')
+            item["work"] = xtract(resp, '//div[@id="job_description"]//text()')
+
         if xtract(resp, '//div[@id="job_description"]/ul[2]/li'):
             item["specialize"] = xtract(resp, '//div[@id="job_description"]'
                                               '/ul[2]/li/text()')
@@ -57,4 +56,7 @@ class TopdevSpider(scrapy.Spider):
         else:
             item["specialize"] = xtract(resp, '//div[@id="job_description"]'
                                               '/div[2]/text()')
+
+        handle_empty_skill(item)
+
         yield item
