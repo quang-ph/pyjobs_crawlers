@@ -5,9 +5,10 @@ if ( ! command -v scrapy ); then
     exit 1
 fi
 
+tmpfile=$(mktemp)
 
 function run_crawler() {
-    scrapy crawl $1 2>&1 | grep ERROR
+    scrapy crawl $1 2>&1 | tee -a $tmpfile |grep ERROR
 }
 
 SPIDER=$1
@@ -23,3 +24,11 @@ else
 fi
 
 popd
+
+if [ "$(wc -l $tmpfile)" == 0 ]; then
+    rm -f $tmpfile
+    exit 0
+else
+    rm -f $tmpfile
+    exit 1
+fi
