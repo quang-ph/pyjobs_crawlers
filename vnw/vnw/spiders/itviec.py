@@ -34,16 +34,10 @@ class ItviecSpider(scrapy.Spider):
                                          'address__full-address"]'
                                          '/span[@itemprop="addressLocality"]/'
                                          'text()'))
-        if xtract(resp, ('//div[@class="job_description"]/'
-                         'div[@class="description"]/'
-                         'ul/li/text()')):
-            item["work"] = xtract(resp, ('//div[@class="job_description"]/'
-                                         'div[@class="description"]/'
-                                         'ul/li/text()'))
-        else:
-            item["work"] = xtract(resp, ('//div[@class="job_description"]/'
-                                         'div[@class="description"]/'
-                                         'p/text()'))
+        jd = xtract(resp, ('//div[@class="job_description"]/'
+                           'div[@class="description"]//text()'))
+        item["work"] = jd
+
         if xtract(resp, ('//div[@class="experience"]/'
                          'ul/li/text()')):
             item["specialize"] = xtract(resp, ('//div[@class="experience"]/'
