@@ -30,8 +30,7 @@ class StackoverflowSpider(scrapy.Spider):
             item["url"] = resp.url
             item["province"] = 'Vietnam'
             item["name"] = xtract(resp, '//a[@class="title job-link"]/text()')
-            item["company"] = xtract(resp,
-                                     '//a[@class="employer up-and-out"]/@href')
+            item["company"] = xtract(resp, '//a[@class="employer"]/text()')
             item["address"] = address
             if xtract(resp, '//div[@class="description"][1]'
                             '/div/p/text()'):
