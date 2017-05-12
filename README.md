@@ -24,8 +24,11 @@ make lint
 
 Chú ý, máy bạn cần cài sẵn `make`.
 
+Để test các spider, chạy:
 
-- Test: #TODO
+```
+make test
+```
 
 # Đóng góp
 
@@ -41,3 +44,6 @@ Chú ý, máy bạn cần cài sẵn `make`.
   ```
 - Code chuẩn Pep8, độ dài mỗi dòng giới hạn là 100 ký tự.
 - Python 2 (project được tạo trước khi Scrapy hỗ trợ Python3)
+
+# TODO
+- Thêm status của các crawler vào web
