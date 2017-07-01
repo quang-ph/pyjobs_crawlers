@@ -17,6 +17,8 @@ class ItviecSpider(scrapy.Spider):
                           '/*/a/@href').extract():
             for href in resp.xpath('//div[@class="job__body"]'
                                    '/*/*/a/@href').extract():
+                if not href.startswith('/it-jobs/'):
+                    continue
                 yield scrapy.Request(resp.urljoin(href), self.parse_content)
 
     def parse_content(self, resp):
@@ -38,13 +40,8 @@ class ItviecSpider(scrapy.Spider):
                            'div[@class="description"]//text()'))
         item["work"] = jd
 
-        if xtract(resp, ('//div[@class="experience"]/'
-                         'ul/li/text()')):
-            item["specialize"] = xtract(resp, ('//div[@class="experience"]/'
-                                               'ul/li/text()'))
-        else:
-            item["specialize"] = xtract(resp, ('//div[@class="experience"]/'
-                                               'p/text()'))
+        item["specialize"] = xtract(resp, ('//div[@class="experience"]/'
+                                           '/text()'))
         item["welfare"] = xtract(resp, ('//div[@class="culture_description"]/'
                                         'ul/li/text()'))
         item["wage"] = ''
