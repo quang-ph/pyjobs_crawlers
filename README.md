@@ -45,5 +45,10 @@ make test
 - Code chuẩn Pep8, độ dài mỗi dòng giới hạn là 100 ký tự.
 - Python 2 (project được tạo trước khi Scrapy hỗ trợ Python3)
 
+# Spiders
+- Xem các spider trong https://github.com/pymivn/pyjobs_crawlers/tree/master/vnw/vnw/spiders
+- TODO: fix Vietnamwork crawler
+- TopCV: bỏ, quá ít job.
+
 # TODO
 - Thêm status của các crawler vào web
