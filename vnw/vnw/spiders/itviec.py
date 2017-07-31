@@ -2,7 +2,7 @@
 import scrapy
 from ..keywords import KWS
 from ..items import PyjobItem
-from ..pymods import xtract
+from ..pymods import xtract, xtract_list
 
 
 class ItviecSpider(scrapy.Spider):
@@ -32,10 +32,9 @@ class ItviecSpider(scrapy.Spider):
                                         '/span/text()'))
         item["expiry_date"] = ''
         item["post_date"] = ''
-        item["province"] = xtract(resp, ('//div[@class="'
-                                         'address__full-address"]'
-                                         '/span[@itemprop="addressLocality"]/'
-                                         'text()'))
+        item["province"] = xtract_list(resp,
+                                       ('//div[@class="address__full-address"]'
+                                        '/span/text()'))[0]
         jd = xtract(resp, ('//div[@class="job_description"]/'
                            'div[@class="description"]//text()'))
         item["work"] = jd
