@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ( ! command -v scrapy ); then
+if ( ! command -v scrapy >/dev/null ); then
     echo "Please source the environment which installed scrapy"
     exit 1
 fi
@@ -8,11 +8,14 @@ fi
 tmpfile=$(mktemp)
 
 function run_crawler() {
-    scrapy crawl $1 2>&1 | tee -a $tmpfile |grep ERROR
+    echo "Crawling $1 spider"
+    scrapy crawl $1 2>> $tmpfile
+    grep 'KeyError: ' $tmpfile
+    grep ERROR: $tmpfile
 }
 
 SPIDER=$1
-pushd vnw/vnw/spiders/
+pushd vnw/vnw/spiders/ >/dev/null
 if [ ! -z $SPIDER ]; then
     run_crawler $SPIDER
 else
@@ -23,9 +26,9 @@ else
     done
 fi
 
-popd
+popd >/dev/null
 
-if [ "$(wc -l $tmpfile)" == 0 ]; then
+if [ "$(wc -l $tmpfile | cut -d' ' -f1)" -eq 0 ]; then
     rm -f $tmpfile
     exit 0
 else
