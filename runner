@@ -9,9 +9,9 @@ tmpfile=$(mktemp)
 
 function run_crawler() {
     echo "Crawling $1 spider"
-    scrapy crawl $1 2>> $tmpfile
-    grep 'KeyError: ' $tmpfile || true
-    grep ERROR: $tmpfile || true
+    scrapy crawl $1 2>> $tmpfile.$1
+    grep 'KeyError: ' $tmpfile.$1 && exit 1
+    grep ERROR: $tmpfile.$1 | tee -a $tmpfile.err || true
 }
 
 SPIDER=$1
@@ -22,16 +22,15 @@ else
     for spider in *.py; do
         spider_name=$(basename $spider)
         SPIDER=${spider_name/.py/}
+        [ $SPIDER == "__init__" ] && continue
         run_crawler $SPIDER
     done
 fi
 
 popd >/dev/null
 
-if [ "$(wc -l $tmpfile | cut -d' ' -f1)" -eq 0 ]; then
-    rm -f $tmpfile
+if [ "$(wc -l $tmpfile.err | cut -d' ' -f1)" -eq 0 ]; then
     exit 0
 else
-    rm -f $tmpfile
     exit 1
 fi
