@@ -10,8 +10,8 @@ tmpfile=$(mktemp)
 function run_crawler() {
     echo "Crawling $1 spider"
     scrapy crawl $1 2>> $tmpfile
-    grep 'KeyError: ' $tmpfile
-    grep ERROR: $tmpfile
+    grep 'KeyError: ' $tmpfile || true
+    grep ERROR: $tmpfile || true
 }
 
 SPIDER=$1
