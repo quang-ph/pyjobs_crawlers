@@ -11,7 +11,7 @@ Run all spiders by
 Or run single spider
 
 ```
-./runner CareerBuilder
+./runner careerbuilder
 ```
 
 ## Test / lint
