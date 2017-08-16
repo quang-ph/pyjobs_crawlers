@@ -34,7 +34,7 @@ class ItviecSpider(scrapy.Spider):
         item["post_date"] = ''
         item["province"] = xtract(resp, ('//div[@class="'
                                          'address__full-address"]'
-                                         '/span[@itemprop="addressLocality"]/'
+                                         '/span[1]/'
                                          'text()'))
         jd = xtract(resp, ('//div[@class="job_description"]/'
                            'div[@class="description"]//text()'))
