@@ -25,6 +25,8 @@ class ItviecSpider(scrapy.Spider):
     start_urls = [
         ("https://itviec.com/it-jobs/" + kw) for kw in KWS
     ]
+    cookies = login()
+
 
     def parse(self, resp):
         if not resp.xpath('//div[@class="job__body"]'
@@ -33,7 +35,9 @@ class ItviecSpider(scrapy.Spider):
                                    '/*/*/a/@href').extract():
                 if not href.startswith('/it-jobs/'):
                     continue
-                yield scrapy.Request(resp.urljoin(href), self.parse_content)
+                yield scrapy.Request(resp.urljoin(href),
+                                     self.parse_content,
+                                     cookies=self.cookies)
 
     def parse_content(self, resp):
         item = PyjobItem()
