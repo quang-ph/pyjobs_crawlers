@@ -2,7 +2,7 @@
 import scrapy
 from ..keywords import KWS
 from ..items import PyjobItem
-from ..pymods import xtract, xtract_list
+from ..pymods import xtract
 
 
 class ItviecSpider(scrapy.Spider):
