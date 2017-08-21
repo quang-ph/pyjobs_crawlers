@@ -27,7 +27,6 @@ class ItviecSpider(scrapy.Spider):
     ]
     cookies = login()
 
-
     def parse(self, resp):
         if not resp.xpath('//div[@class="job__body"]'
                           '/*/a/@href').extract():
