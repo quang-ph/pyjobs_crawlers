@@ -1,6 +1,6 @@
 import os
 
-ITVIEC_EMAIL = ''
+ITVIEC_USERNAME = ''
 ITVIEC_PASSWORD = ''
 
 BOT_NAME = 'vnw'
@@ -33,3 +33,5 @@ if is_prod:
     else:
         VIETNAMWORK_USERNAME = prod.custom.get('VIETNAMWORK_USERNAME', '')
         VIETNAMWORK_PASSWORD = prod.custom.get('VIETNAMWORK_PASSWORD', '')
+        ITVIEC_USERNAME = prod.custom.get('ITVIEC_USERNAME', '')
+        ITVIEC_PASSWORD = prod.custom.get('ITVIEC_PASSWORD', '')

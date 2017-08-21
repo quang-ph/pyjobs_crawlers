@@ -4,7 +4,7 @@ import requests
 from ..keywords import KWS
 from ..items import PyjobItem
 from ..pymods import xtract
-from ..settings import ITVIEC_EMAIL, ITVIEC_PASSWORD
+from ..settings import ITVIEC_USERNAME, ITVIEC_PASSWORD
 
 
 def login():
@@ -12,7 +12,7 @@ def login():
     s.get('https://itviec.com')
     s.post('https://itviec.com/sign_in',
            data={'utf8': 'e2 9c 93',
-                 'user[email]': ITVIEC_EMAIL,
+                 'user[email]': ITVIEC_USERNAME,
                  'user[password]': ITVIEC_PASSWORD,
                  'sign_in_then_review': 'false',
                  'commit': 'Sign in'})
