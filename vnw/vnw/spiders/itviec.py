@@ -2,7 +2,7 @@
 import scrapy
 from ..keywords import KWS
 from ..items import PyjobItem
-from ..pymods import xtract
+from ..pymods import xtract, xtract_list
 
 
 class ItviecSpider(scrapy.Spider):
@@ -36,6 +36,7 @@ class ItviecSpider(scrapy.Spider):
                                          'address__full-address"]'
                                          '/span[1]/'
                                          'text()'))
+
         jd = xtract(resp, ('//div[@class="job_description"]/'
                            'div[@class="description"]//text()'))
         item["work"] = jd
