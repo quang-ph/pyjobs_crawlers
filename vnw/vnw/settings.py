@@ -1,5 +1,7 @@
 import os
 
+ITVIEC_EMAIL = ''
+ITVIEC_PASSWORD = ''
 
 BOT_NAME = 'vnw'
 BOT_VERSION = '1.0.5'
