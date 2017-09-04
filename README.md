@@ -1,6 +1,6 @@
 # Jobs.pymi.vn Crawlers
 
-[![CircleCI](https://circleci.com/gh/pymivn/pyjobs_crawlers.svg?style=svg)](https://circleci.com/gh/pymivn/pyjobs_crawlers)
+[![Build Status](https://travis-ci.org/pymivn/pyjobs_crawlers.svg?branch=master)](https://travis-ci.org/pymivn/pyjobs_crawlers)
 
 Run all spiders by
 
