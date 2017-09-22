@@ -36,4 +36,4 @@ if is_prod:
         VIETNAMWORK_PASSWORD = prod.custom.get('VIETNAMWORK_PASSWORD', '')
         ITVIEC_USERNAME = prod.custom.get('ITVIEC_USERNAME', '')
         ITVIEC_PASSWORD = prod.custom.get('ITVIEC_PASSWORD', '')
-        fb_page_access_token = prod.custom.get('fb_page_access_token', '')
+        FB_PAGE_ACCESS_TOKEN = prod.custom.get('fb_page_access_token', '')
