@@ -19,6 +19,7 @@ is_prod = os.environ.get('PYJOBS_IS_PROD', False)
 if is_prod:
     ITEM_PIPELINES.update({
             'vnw.pipelines.APIPipeline': 1000,
+            'vnw.pipelines.FBPagePipeline': 1100,
     })
     DOWNLOAD_DELAY = 2
     DOWNLOADER_MIDDLEWARES = {
@@ -35,3 +36,4 @@ if is_prod:
         VIETNAMWORK_PASSWORD = prod.custom.get('VIETNAMWORK_PASSWORD', '')
         ITVIEC_USERNAME = prod.custom.get('ITVIEC_USERNAME', '')
         ITVIEC_PASSWORD = prod.custom.get('ITVIEC_PASSWORD', '')
+        fb_page_access_token = prod.custom.get('fb_page_access_token', '')

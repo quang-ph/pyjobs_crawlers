@@ -2,6 +2,8 @@ import logging
 import requests
 import string
 
+from scrapy.conf import settings
+
 logger = logging.getLogger(__name__)
 REQUIRED_FIELDS = ['company', 'name', 'province', 'url', 'work', 'specialize']
 
@@ -63,8 +65,35 @@ class APIPipeline(object):
             if resp.status_code == 200:
                 logger.info('Added job %s, response %s',
                             item._values.get('url'), resp.content)
+                return item
             else:
                 logger.error('Failed adding job %s, response %s',
                              item._values.get('url'), resp.content)
         except KeyError as e:
             logger.error('Error when posting: %s', e)
+
+
+class FBPagePipeline(object):
+    def process_item(self, item, spider):
+        send(item)
+
+
+def send(item):
+    API = 'https://graph.facebook.com/v2.10/'
+    # THIS current use genearted page token
+    page_token = settings.get('fb_page_access_token')
+    params = {'access_token': page_token}  # NOQA
+
+    page = 'pyjobsvn?fields=access_token'
+
+    job = item
+    payload = {"message": job['title'], "link": job['link']}
+
+    pageid = requests.get(API + page, params=params).json()['id']
+    post_endpoint = pageid + "/feed"
+    params.update(payload)
+    r = requests.post(API + post_endpoint, params=params)
+    if r.status_code == 200:
+        print(r, r.text)
+    else:
+        logger.error("Failed to send to FB page. Response %s %r", r, r.text)
