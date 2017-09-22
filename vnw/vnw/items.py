@@ -31,3 +31,4 @@ class PyjobItem(Item):
     experience = Field()
     keyword = Field()
     content = Field()
+    created = Field()
