@@ -21,8 +21,6 @@ class VnwPipeline(object):
         return item
 
 
-# http://stackoverflow.com/questions/13527921/scrapy-silently-drop-an-item
-# Return None to drop item and avoid annoying warning log when drop
 class ValidatePipeline(object):
     def process_item(self, item, spider):
         if not item:
@@ -82,27 +80,28 @@ class FBPagePipeline(object):
         send(item)
 
 
+FBAPI = 'https://graph.facebook.com/v2.10/'
+PJ_PAGE_ID = '187862604923059'
+
+PAGEPOST = FBAPI + PJ_PAGE_ID + "/feed"
+
+
 def send(item):
-    API = 'https://graph.facebook.com/v2.10/'
-    # THIS current use genearted page token
-    logger.warning(settings)
     page_token = settings.get('FB_PAGE_ACCESS_TOKEN')
+
     if len(page_token) > 0:
-        logger.info("Token is not empty")
+        logger.debug("Token is not empty")
+
     params = {'access_token': page_token}
 
-    page = 'pyjobsvn?fields=access_token'
-
-    job = item
-    payload = {"message": job._values.get('name'), "link": job._values.get('created')}
+    payload = {"message": item._values.get('name'), "link": item._values.get('created')}
 
     logger.info("About to send %s", payload)
 
-    pageid = requests.get(API + page, params=params).json()['id']
-    post_endpoint = pageid + "/feed"
     params.update(payload)
-    r = requests.post(API + post_endpoint, params=params)
+    r = requests.post(PAGEPOST, params=params)
     if r.status_code == 200:
-        print(r, r.text)
+        logger.info(r, r.text)
     else:
         logger.error("Failed to send to FB page. Response %s %r", r, r.text)
+        raise DropItem
