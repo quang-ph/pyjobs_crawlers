@@ -65,6 +65,7 @@ class APIPipeline(object):
             if resp.status_code == 200:
                 logger.info('Added job %s, response %s',
                             item._values.get('url'), resp.content)
+                item.update({"created": resp.json()['created']})
                 return item
             else:
                 logger.error('Failed adding job %s, response %s',
@@ -87,7 +88,7 @@ def send(item):
     page = 'pyjobsvn?fields=access_token'
 
     job = item
-    payload = {"message": job['title'], "link": job['link']}
+    payload = {"message": job['title'], "link": job['created']}
 
     pageid = requests.get(API + page, params=params).json()['id']
     post_endpoint = pageid + "/feed"
