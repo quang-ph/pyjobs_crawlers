@@ -3,6 +3,7 @@ import requests
 import string
 
 from scrapy.conf import settings
+from scrapy.exceptions import DropItem
 
 logger = logging.getLogger(__name__)
 REQUIRED_FIELDS = ['company', 'name', 'province', 'url', 'work', 'specialize']
@@ -26,7 +27,7 @@ class ValidatePipeline(object):
     def process_item(self, item, spider):
         if not item:
             logger.error('Drop job, item is empty')
-            return None
+            raise DropItem
         try:
             kv = {kw: item[kw] for kw in REQUIRED_FIELDS}
         except KeyError as e:
@@ -34,7 +35,7 @@ class ValidatePipeline(object):
                          item.get('name', 'MISSING'),
                          item.get('url', 'MISSING'),
                          e)
-            return None
+            raise DropItem
         for k, v in kv.iteritems():
             assert isinstance(v, basestring), (
                     "Pipeline only accepts string, "
@@ -44,7 +45,7 @@ class ValidatePipeline(object):
                              item.get('name', 'MISSING'),
                              item.get('url', 'MISSING'),
                              k)
-                return None
+                raise DropItem
 
         item = xtract_item(item)
         return item
@@ -59,7 +60,7 @@ class APIPipeline(object):
     def process_item(self, item, spider):
         # Dropped item in prior step in pipeline
         if item is None:
-            return
+            raise DropItem
         try:
             resp = requests.post(self.url, json=item._values)
             if resp.status_code == 200:
@@ -70,8 +71,10 @@ class APIPipeline(object):
             else:
                 logger.error('Failed adding job %s, response %s',
                              item._values.get('url'), resp.content)
+                raise DropItem
         except KeyError as e:
             logger.error('Error when posting: %s', e)
+            raise DropItem
 
 
 class FBPagePipeline(object):
@@ -82,13 +85,18 @@ class FBPagePipeline(object):
 def send(item):
     API = 'https://graph.facebook.com/v2.10/'
     # THIS current use genearted page token
-    page_token = settings.get('fb_page_access_token')
-    params = {'access_token': page_token}  # NOQA
+    logger.warning(settings)
+    page_token = settings.get('FB_PAGE_ACCESS_TOKEN')
+    if len(page_token) > 0:
+        logger.info("Token is not empty")
+    params = {'access_token': page_token}
 
     page = 'pyjobsvn?fields=access_token'
 
     job = item
-    payload = {"message": job['title'], "link": job['created']}
+    payload = {"message": job._values.get('name'), "link": job._values.get('created')}
+
+    logger.info("About to send %s", payload)
 
     pageid = requests.get(API + page, params=params).json()['id']
     post_endpoint = pageid + "/feed"
