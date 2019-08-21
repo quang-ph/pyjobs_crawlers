@@ -29,20 +29,22 @@ class ValidatePipeline(object):
         try:
             kv = {kw: item[kw] for kw in REQUIRED_FIELDS}
         except KeyError as e:
-            logger.error('Drop job: %s %s, missing required key %r',
-                         item.get('name', 'MISSING'),
-                         item.get('url', 'MISSING'),
-                         e)
+            logger.error('Drop job: {} {}, missing required key {}'.format(
+                            item.get('name', 'MISSING'),
+                            item.get('url', 'MISSING'),
+                            e)
+                         )
             raise DropItem
         for k, v in kv.iteritems():
-            assert isinstance(v, basestring), (
+            assert isinstance(v, str), (
                     "Pipeline only accepts string, "
                     "crawler must preprocess other types to string")
             if v.strip().strip(string.punctuation) == '':
-                logger.error('Drop job: %s %s, required key %r is empty',
-                             item.get('name', 'MISSING'),
-                             item.get('url', 'MISSING'),
-                             k)
+                logger.error('Drop job: {} {}, required key {} is empty'.format(
+                                item.get('name', 'MISSING'),
+                                item.get('url', 'MISSING'),
+                                k)
+                             )
                 raise DropItem
 
         item = xtract_item(item)
@@ -62,16 +64,16 @@ class APIPipeline(object):
         try:
             resp = requests.post(self.url, json=item._values)
             if resp.status_code == 200:
-                logger.info('Added job %s, response %s',
-                            item._values.get('url'), resp.content)
+                logger.info('Added job {}, response {}'.format(
+                            item._values.get('url'), resp.content))
                 item.update({"created": resp.json()['created']})
                 return item
             else:
-                logger.error('Failed adding job %s, response %s',
-                             item._values.get('url'), resp.content)
+                logger.error('Failed adding job {}, response {}'.format(
+                             item._values.get('url'), resp.content))
                 raise DropItem
         except KeyError as e:
-            logger.error('Error when posting: %s', e)
+            logger.error('Error when posting: {}'.format(e))
             raise DropItem
 
 
@@ -96,12 +98,12 @@ def send(item):
 
     payload = {"message": item._values.get('name'), "link": item._values.get('created')}
 
-    logger.info("About to send %s", payload)
+    logger.info("About to send {}".format(payload))
 
     params.update(payload)
     r = requests.post(PAGEPOST, params=params)
     if r.status_code == 200:
         logger.info(r, r.text)
     else:
-        logger.error("Failed to send to FB page. Response %s %r", r, r.text)
+        logger.error("Failed to send to FB page. Response {} {}".format(r, r.text))
         raise DropItem
