@@ -2,7 +2,7 @@ all:
 	lint
 
 lint:
-	flake8 --exclude env/,rotate_useragent.py .
+	flake8 --exclude venv/,env/,rotate_useragent.py .
 
 test:
 	./runner

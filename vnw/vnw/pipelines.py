@@ -2,7 +2,7 @@ import logging
 import requests
 import string
 
-from scrapy.conf import settings
+from scrapy.settings import Settings as settings
 from scrapy.exceptions import DropItem
 
 logger = logging.getLogger(__name__)
