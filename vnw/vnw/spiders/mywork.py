@@ -37,7 +37,7 @@ class MyworkSpider(scrapy.Spider):
                                        '/a/@href').extract()[-1]
                 yield scrapy.Request(resp.urljoin(next_page), self.parse)
         except IndexError:
-            print "Page none!"
+            print("Page none!")
 
     def parse_content(self, resp):
         item = PyjobItem()

@@ -35,7 +35,7 @@ class ValidatePipeline(object):
                          e)
             raise DropItem
         for k, v in kv.iteritems():
-            assert isinstance(v, basestring), (
+            assert isinstance(v, str), (
                     "Pipeline only accepts string, "
                     "crawler must preprocess other types to string")
             if v.strip().strip(string.punctuation) == '':
