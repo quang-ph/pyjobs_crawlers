@@ -7,7 +7,7 @@ import logging
 from selenium import webdriver
 from scrapy.spiders.init import InitSpider
 from scrapy.http import Request, FormRequest
-from scrapy.conf import settings
+from scrapy.settings import Settings as settings
 
 from ..items import PyjobItem
 from ..pymods import xtract

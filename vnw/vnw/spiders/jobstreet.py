@@ -4,7 +4,7 @@ import scrapy
 from ..keywords import KWS
 from ..items import PyjobItem
 from ..pymods import xtract, xtract_list, handle_empty_skill
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 
 class TopdevSpider(scrapy.Spider):

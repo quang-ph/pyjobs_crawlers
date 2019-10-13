@@ -23,7 +23,7 @@ if is_prod:
     })
     DOWNLOAD_DELAY = 2
     DOWNLOADER_MIDDLEWARES = {
-        'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,  # NOQA
+        'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,  # NOQA
         'vnw.rotate_useragent.RotateUserAgentMiddleware': 400
     }
 
