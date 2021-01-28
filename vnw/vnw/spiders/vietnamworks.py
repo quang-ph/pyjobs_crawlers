@@ -7,7 +7,7 @@ import logging
 from selenium import webdriver
 from scrapy.spiders.init import InitSpider
 from scrapy.http import Request, FormRequest
-from scrapy.settings import Settings as settings
+from scrapy.settings import Settings
 
 from ..items import PyjobItem
 from ..pymods import xtract
@@ -16,24 +16,26 @@ from ..keywords import KWS
 logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger()
 
+settings = Settings()
+
 
 class VnwSpider(InitSpider):
-    name = "vietnamwork"
-    allowed_domains = ["vietnamwork.com"]
+    name = "vietnamworks"
+    allowed_domains = ["vietnamworks.com"]
     login_page = "http://www.vietnamworks.com/login"
     start_urls = [
         ("http://www.vietnamworks.com/" + kw + "-kw") for kw in KWS
     ]
 
     def __init__(self):
-        self.driver = webdriver.PhantomJS()
+        self.driver = webdriver.Chrome()
 
     def init_request(self):
         return Request(url=self.login_page, callback=self.login)
 
     def login(self, resp):
-        user = settings.get('VIETNAMWORK_USERNAME')
-        password = settings.get('VIETNAMWORK_PASSWORD')
+        user = settings.get(name='VIETNAMWORK_USERNAME')
+        password = settings.get(name='VIETNAMWORK_PASSWORD')
         return FormRequest.from_response(resp,
                                          method='POST',
                                          formdata={'form[username]': user,
@@ -46,13 +48,15 @@ class VnwSpider(InitSpider):
         return self.initialized()
 
     def parse(self, resp):
+        print(f'Begin parse {resp}')
         url = resp.url
         keyword = url.split('.com/')[1].split('-kw')[0]
         self.driver.get(url)
-        for div in self.driver.find_elements_by_xpath('//div[@class="job-item-info relative"]'):
+        for div in self.driver.find_elements_by_xpath('//div[@class="job-item animated fadeIn position-relative job-priority"]'):
             try:
-                posted = div.find_element_by_class_name("posted")
+                posted = div.find_element_by_class_name("posted-date")
             except Exception as e:
+                print(e)
                 _logger.info(str(e))
                 break
             post_date = posted.text.split(': ')[1]
@@ -98,5 +102,5 @@ class VnwSpider(InitSpider):
             item["size"] = ''
         item["logo"] = xtract(resp, '//img[@class="logo img-responsive"]/@src')
         item["expiry_date"] = ''
-
+        print(f"Parsed 1 item:  {item}")
         yield item

@@ -10,9 +10,9 @@ from urllib.parse import urljoin
 class TopdevSpider(scrapy.Spider):
     name = "jobstreet"
     allowed_domains = ["jobstreet.vn"]
-    url = 'https://www.jobstreet.vn/vi/job-search/'
+
     start_urls = [
-        (urljoin(url, "job-vacancy.php?ojs=10&key=") + kw) for kw in KWS
+        (urljoin('https://www.jobstreet.vn/vi/job-search/', "job-vacancy.php?ojs=10&key=") + kw) for kw in KWS
     ]
 
     def parse(self, resp):

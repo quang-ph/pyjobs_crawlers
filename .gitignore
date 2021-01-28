@@ -1,3 +1,7 @@
 *.pyc
 *.json
 /venv
+.idea/
+geckodriver.log
+ghostdriver.log
+vnw/spiders/geckodriver.log
