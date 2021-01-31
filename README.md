@@ -14,6 +14,29 @@ Or run single spider
 ./runner careerbuilder
 ```
 
+##Hướng dẫn chạy spider thu thập dữ liệu công ty từ Vietnamworks
+
+Cài đặt môi trường
+```
+pip install -r requirements.txt
+```
+
+Export đường dẫn tới thư mục driver (trong vnw/driver)
+```
+export PATH="/path/to/driver/folder:$PATH"
+```
+
+Di chuyển vào thư mục crawler
+```
+cd vnw
+```
+
+Khởi chạy spider
+```
+python run.py crawl vnw-company
+```
+
+
 ## Test / lint
 
 Để test style/lint chạy:
