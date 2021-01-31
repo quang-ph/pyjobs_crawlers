@@ -1,12 +1,15 @@
+import json
 import logging
 import requests
 import string
 
 from scrapy.settings import Settings as settings
 from scrapy.exceptions import DropItem
+from itemadapter import ItemAdapter
 
 logger = logging.getLogger(__name__)
 REQUIRED_FIELDS = ['company', 'name', 'province', 'url', 'work', 'specialize']
+COMPANY_REQUIRED_FIELDS = ['name', 'address', 'logo']
 
 
 def xtract_item(item):
@@ -18,6 +21,19 @@ def xtract_item(item):
 
 class VnwPipeline(object):
     def process_item(self, item, spider):
+        return item
+
+
+class TextFilePipeline(object):
+    def open_spider(self, spider):
+        self.file = open('data/company.txt', 'w', encoding='utf8')
+
+    def close_spider(self, spider):
+        self.file.close()
+
+    def process_item(self, item, spider):
+        line = json.dumps(ItemAdapter(item).asdict(), ensure_ascii=False) + "\n"
+        self.file.write(line)
         return item
 
 
@@ -36,8 +52,8 @@ class ValidatePipeline(object):
             raise DropItem
         for k, v in kv.iteritems():
             assert isinstance(v, str), (
-                    "Pipeline only accepts string, "
-                    "crawler must preprocess other types to string")
+                "Pipeline only accepts string, "
+                "crawler must preprocess other types to string")
             if v.strip().strip(string.punctuation) == '':
                 logger.error('Drop job: %s %s, required key %r is empty',
                              item.get('name', 'MISSING'),

@@ -32,3 +32,11 @@ class PyjobItem(Item):
     keyword = Field()
     content = Field()
     created = Field()
+
+class companyItem(Item):
+    name = Field()
+    address = Field()
+    size = Field()
+    website = Field()
+    logo = Field()
+    other_info = Field()

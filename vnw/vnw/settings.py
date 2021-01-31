@@ -8,10 +8,9 @@ BOT_NAME = 'vnw'
 SPIDER_MODULES = ['vnw.spiders']
 NEWSPIDER_MODULE = 'vnw.spiders'
 ITEM_PIPELINES = {
-    'vnw.pipelines.ValidatePipeline': 500,
+    'vnw.pipelines.TextFilePipeline': 500,
 }
 
-DOWNLOAD_DELAY = 5
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = 'False'
 
@@ -20,10 +19,6 @@ USER_AGENT = (
 
 is_prod = os.environ.get('PYJOBS_IS_PROD', False)
 if is_prod:
-    ITEM_PIPELINES.update({
-        'vnw.pipelines.APIPipeline': 1000,
-        'vnw.pipelines.FBPagePipeline': 1100,
-    })
     DOWNLOAD_DELAY = 2
     DOWNLOADER_MIDDLEWARES = {
         'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,  # NOQA
@@ -35,8 +30,8 @@ if is_prod:
     except ImportError:
         pass
     else:
-        VIETNAMWORK_USERNAME = prod.custom.get('VIETNAMWORK_USERNAME', 'hongquang2310255@gmail.com')
-        VIETNAMWORK_PASSWORD = prod.custom.get('VIETNAMWORK_PASSWORD', 'Congavang@123')
+        VIETNAMWORK_USERNAME = prod.custom.get('VIETNAMWORK_USERNAME', 'some_username')
+        VIETNAMWORK_PASSWORD = prod.custom.get('VIETNAMWORK_PASSWORD', 'some_password')
         ITVIEC_USERNAME = prod.custom.get('ITVIEC_USERNAME', '')
         ITVIEC_PASSWORD = prod.custom.get('ITVIEC_PASSWORD', '')
         FB_PAGE_ACCESS_TOKEN = prod.custom.get('fb_page_access_token', '')
